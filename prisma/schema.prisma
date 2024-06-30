@@ -1,0 +1,196 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// defining enums
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum TableStatus {
+  BUSY
+  FREE
+  BOOKED
+}
+
+enum MenuCategory {
+  FOOD
+  DRINK
+}
+
+enum ExpenseCategory {
+  CAFE
+  REPAIR
+  KITCHEN
+  ADMINCOST
+  ASSETCOST
+  EMPLOYEE
+  OTHERS
+}
+
+model User {
+  id                      Int       @id @default(autoincrement())
+  email                   String    @unique
+  username                String
+  password                String
+  first_name              String?
+  last_name               String?
+  phone                   String?
+  image                   String?
+  role                    UserRole
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  resetPasswordToken      String?
+  resetPasswordExpireDate DateTime?
+}
+
+model Customer {
+  id             Int              @id @default(autoincrement())
+  name           String
+  BookingHistory BookingHistory[]
+  Order          Order[]
+}
+
+model Table {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  status            TableStatus         @default(FREE)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt  
+  bookingHistory    BookingHistory[]
+  order             Order[]
+  incomeTransaction IncomeTransaction[]
+}
+
+model BookingHistory {
+  id                 Int                 @id @default(autoincrement())
+  customerName       String?
+  startTime          DateTime?
+  endTime            DateTime?
+  duration           String?
+  amountEarned       Int?
+  createdAt          DateTime?
+  tableId            Int
+  table              Table               @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  incomeTransactions IncomeTransaction[]
+  customerId         Int?
+  customer           Customer?           @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model MenuItem {
+  id         Int          @id @default(autoincrement())
+  name       String
+  buyPrice   Int?
+  price      Int
+  countStock Int?
+  category   MenuCategory
+  orderItems OrderItem[]
+  otherSales OtherSales[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  total      Int?
+  createdAt  DateTime    @default(now())
+  tableId    Int
+  table      Table       @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+  customerId Int?
+  customer   Customer?   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  itemId      Int
+  quantity    Int
+  subtotal    Int?
+  profitOrder Int?
+  createdAt   DateTime @default(now())
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem    MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+model IncomeTransaction {
+  id                  Int            @id @default(autoincrement())
+  tableId             Int
+  bookingHistoryId    Int
+  transactionDateTime DateTime
+  amount              Decimal
+  type                String
+  table               Table          @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  bookingHistory      BookingHistory @relation(fields: [bookingHistoryId], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+  id          Int             @id @default(autoincrement())
+  name        String?
+  expenseDate DateTime
+  amount      Int
+  expireDate  Int?
+  description String?
+  staffId     Int?
+  staffs      Staff?          @relation(fields: [staffId], references: [staff_id], onDelete: Cascade)
+  category    ExpenseCategory
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Staff {
+  staff_id Int       @id @default(autoincrement())
+  name     String
+  job      String
+  phone    String
+  salary   Int?
+  Expenses Expense[]
+}
+
+model Products {
+  id         Int    @id @default(autoincrement())
+  name       String
+  buyPrice   Int    @default(0)
+  sellPrice  Int
+  countStock Int?
+
+  sellProducts SellProduct[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SellProduct {
+  id            Int      @id @default(autoincrement())
+  countStock    Int?
+  customerName  String
+  price         Int
+  product       Products @relation(fields: [productId], references: [id])
+  productProfit Int      @default(0)
+  productId     Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model OtherSales {
+  id           Int       @id @default(autoincrement())
+  customerName String
+  amount       Int
+  menuItem     MenuItem  @relation(fields: [menuItemId], references: [id])
+  menuItemId   Int
+  price        Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+}
