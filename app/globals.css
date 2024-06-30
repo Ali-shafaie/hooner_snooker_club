@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.error {
+  @apply text-rose-500 text-sm;
+}
+.hover-list {
+  position: relative;
+  display: flex;
+}
+
+.hover-list .list {
+  display: none;
+  position: absolute;
+
+  -top: 18px;
+
+  right: 0;
+  z-index: 10;
+}
+
+.hover-list:hover .list {
+  display: block;
+}
+
+.hover-list .list-item {
+  border-radius: 3px;
+  padding: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.hover-list .list-item:hover {
+  background-color: #f0f0f0;
+}
+/* your-toast-styles.css */
+
+/* Customize the toast container */
+/* Initial state - hidden */
+.modal {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Visible state - shown */
+.modal.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.pstyle {
+  font-size: 12px;
+  font-weight: bold;
+}
+.pdf-styles {
+  /* Resetting margin and padding for all elements */
+  margin: 0;
+  padding: 0;
+
+  /* Specify font size and family */
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+
+  /* Additional styles as needed */
+}
+
+.pdf-styles h2 {
+  /* Styles for heading elements */
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.pdf-styles p {
+  /* Styles for paragraph elements */
+  margin-bottom: 8px;
+}
+.manual-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.manual-modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.manual-modal button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.manual-modal button:hover {
+  background-color: #0056b3;
+}
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .print-container {
+    padding: 1rem;
+    width: 3in;
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .justify-center {
+    justify-content: center;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .mx-10 {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
+
+  .pt-4 {
+    padding-top: 1rem;
+  }
+
+  .pt-2 {
+    padding-top: 0.5rem;
+  }
+
+  .border-b {
+    border-bottom: 1px dashed #e5e7eb;
+  }
+
+  .mr {
+    margin-right: 40px;
+  }
+
+  .border-t {
+    border-top: 1px dashed #e5e7eb;
+  }
+
+  .print-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  /* Add more print-specific styles as needed */
+}

@@ -1,0 +1,24 @@
+import prisma from "@/app/libs/prismadb";
+import { DateTime } from "luxon";
+
+export default async function fetchOrderDrink() {
+  try {
+    const orderItems = await prisma.orderItem.findMany({
+      where: {
+        menuItem: {
+          category: "DRINK",
+        },
+      },
+      include: {
+        menuItem: true,
+      },
+    });
+
+    return orderItems;
+  } catch (error) {
+    console.error("Order items couldn't be fetched ", error);
+    return new Response("Order items couldn't be fetched ", { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+}
