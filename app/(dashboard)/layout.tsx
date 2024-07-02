@@ -7,16 +7,16 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default async function Layout({ children }: LayoutProps) {
+export default function Layout({ children }: LayoutProps) {
   return (
     <main className="w-full h-full">
       <Navbar />
       {/*********************** * The Sidebar section starts ************************************/}
 
-      <section className="grid md:grid-cols-3 lg:grid-cols-4">
+      <section className="relative flex">
         <Sidebar />
         {/* *********** * Content Starts *********************** */}
-        <div className="md:col-span-2 lg:col-span-3 pt-12  min-h-screen">
+        <div className="mr-0 md:mr-64 pt-12 min-h-screen flex-1">
           {children}
         </div>
       </section>
@@ -25,10 +25,10 @@ export default async function Layout({ children }: LayoutProps) {
 
       {/*************  Footer Section Starts  *******************/}
 
-      <section className="footer text-white bg-green-700  py-10">
-        <div className="container grid md:grid-cols-3 lg:grid-cols-4 ">
+      <section className="footer text-white bg-green-700 py-10">
+        <div className="container grid md:grid-cols-3 lg:grid-cols-4">
           <div></div>
-          <div className="flex flex-col justify-center items-center gap-2 ">
+          <div className="flex flex-col justify-center items-center gap-2">
             <Link href={"/"}>
               <p className="hover:underline hover:text-green-600">صفحه اصلی</p>
             </Link>

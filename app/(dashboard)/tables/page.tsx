@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import ContentLoading from "@/components/content-loading";
 import { TablesType } from "@/types/tables";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TablePage = () => {
   const [tables, setTable] = useState<TablesType[]>([]);
@@ -45,7 +46,6 @@ const TablePage = () => {
     };
     fetchMenuItems();
   }, []);
-  console.log(tables, "tables...");
 
   // code for Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -68,7 +68,31 @@ const TablePage = () => {
     return order[a.status] - order[b.status];
   });
   if (isLoading === true) {
-    return <ContentLoading />;
+    return (
+      <div className="grid md:grid-cols-2 gap-5 h-screen">
+        <div className="">
+          <div className="flex flex-col space-y-3 items-end">
+            <Skeleton className="h-8 w-[140px]" />
+
+            <Skeleton className="h-[500px] w-[550px] rounded-xl" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[550px]" />
+              <Skeleton className="h-4 w-[500px]" />
+            </div>
+          </div>
+        </div>
+        <div className="">
+          <div className="flex flex-col space-y-3 items-end">
+            <Skeleton className="h-8 w-[140px]" />
+            <Skeleton className="h-[500px] w-[550px] rounded-xl" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[550px]" />
+              <Skeleton className="h-4 w-[500px]" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
   return (
     <div className="min-h-[90vh]">
@@ -90,6 +114,7 @@ const TablePage = () => {
             </div>
           ))}
       </div>
+
       <div className="mt-12 pb-12 ">
         <Pagination
           activePage={currentPage}

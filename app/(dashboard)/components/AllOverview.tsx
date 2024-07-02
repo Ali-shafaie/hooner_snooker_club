@@ -9,13 +9,15 @@ import React from "react";
 import { Overview } from "./overview";
 import { RecentSales } from "./recent-sales";
 import MyPieChart from "./PirChart";
-import { TableListResult } from "@/types/tables";
+import { AllTableListType, TableListResult } from "@/types/tables";
+import { DataChart } from "./ChartData";
 interface Props {
   table: TableListResult;
   total_expences: number;
   bookings: any;
   TotalMixedProfit: number;
   menuItemsList: number;
+  allTableList: AllTableListType[];
 }
 
 const AllOverview = ({
@@ -24,13 +26,14 @@ const AllOverview = ({
   menuItemsList,
   table,
   TotalMixedProfit,
+  allTableList,
 }: Props) => {
   return (
     <div>
       {" "}
-      <div className=" mt-5 bg-gray-200 p-5">
+      <div className=" mt-5 bg-gray-200 p-5 rounded-[4px]">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 ">
-          <Card className="bg-white rounded">
+          <Card className="bg-white rounded border-b-4 border-green-500">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-[13px] font-bold ">
                 مجموعه میز ها
@@ -65,7 +68,7 @@ const AllOverview = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white rounded">
+          <Card className="bg-white rounded  border-b-4 border-green-500">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-[13px] font-bold ">
                 مجموعه مینو
@@ -100,7 +103,7 @@ const AllOverview = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white rounded">
+          <Card className="bg-white rounded border-b-4 border-green-500">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-[13px] font-bold ">
                 مصارف مجموعی
@@ -138,7 +141,7 @@ const AllOverview = ({
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white rounded">
+          <Card className="bg-white rounded border-b-4 border-green-500">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-[13px] font-bold ">
                 مجموع پول دخل
@@ -198,7 +201,17 @@ const AllOverview = ({
         <div className="hidden md:grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-7  bg-white">
           <Card className="col-span-4">
             <CardHeader>
-              <CardTitle>گراف </CardTitle>
+              <CardTitle>
+                {" "}
+                <div className="flex flex-col space-y-2">
+                  <h3 className="text-2xl  leading-none tracking-tight">
+                    راپور سالانه
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    این یک گراف از درامد و مصارف میباشد.
+                  </p>
+                </div>
+              </CardTitle>
             </CardHeader>
             <CardContent className="pl-2">
               <Overview />
@@ -218,16 +231,7 @@ const AllOverview = ({
             </CardContent>
           </Card>
         </div>
-        <div className="hidden md:grid  gap-4 md:grid-cols-2 lg:grid-cols-7 mt-7 bg-white">
-          <Card className="col-span-4">
-            <CardHeader>
-              <CardTitle>Table Status</CardTitle>
-            </CardHeader>
-            <CardContent className="pl-2">
-              <MyPieChart tableLength={table.totalTables} />
-            </CardContent>
-          </Card>
-        </div>
+        <DataChart allTableList={allTableList} />
       </div>
     </div>
   );

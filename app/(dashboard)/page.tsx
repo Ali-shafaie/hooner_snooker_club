@@ -16,7 +16,8 @@ import getTotalOtherSallesMixedDrinkRevenu from "../actions/otherSalesRevenue/ge
 import { ExpenseCategoriesType } from "@/types/expense";
 import { MenuCategoryTotals } from "@/types/menuItem";
 import { ProfitProductType } from "@/types/product";
-import { TableListResult } from "@/types/tables";
+import { AllTableListType, TableListResult } from "@/types/tables";
+import getAllTableList from "../actions/tables/gitAllTableList";
 
 export default async function Page({
   params,
@@ -85,7 +86,7 @@ export default async function Page({
   );
 
   const table: TableListResult = await getTableList(startDate, endDate);
-
+  const allTableList: AllTableListType[] = await getAllTableList();
   const menuItems: MenuCategoryTotals = await fetchAllMenuItems(
     startDate,
     endDate
@@ -126,7 +127,7 @@ export default async function Page({
 
   return (
     <main className={""}>
-      <div className="flex flex-wrap justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center px-6">
         <CalendarDateRangePicker
           className=""
           startDate={desiredStartDateString}
@@ -142,7 +143,7 @@ export default async function Page({
           total_Profit_Fixed={total_Profit_Fixed}
         />
       </div>
-      <div className="pt-10">
+      <div className="pt-5 px-6">
         <h1 className="text-3xl  font-bold">داشبورد</h1>
         <p className="text-sm text-gray-700 pt-5 px-5 md:px-0">
           این داشبورد بصورت پیش فرض برای یک روز دیزاین گردیده و همچنان میتوانید،
@@ -151,7 +152,7 @@ export default async function Page({
         </p>
       </div>
 
-      <div className=" my-5">
+      <div className=" my-5 px-6">
         <Tabs>
           <Tab label="مرور همه">
             {/* Content for the Profit Product tab */}
@@ -162,6 +163,7 @@ export default async function Page({
                 menuItemsList={menuItems.totalMenuItems}
                 table={table}
                 TotalMixedProfit={total_Profit_mixed}
+                allTableList={allTableList}
               />
             </div>
           </Tab>
