@@ -72,7 +72,7 @@ const TablePage = () => {
       <div className="grid md:grid-cols-2 gap-5 h-screen">
         <div className="">
           <div className="flex flex-col space-y-3 items-end">
-            <Skeleton className="h-8 w-[140px]" />
+            <Skeleton className="h-6 w-[140px]" />
 
             <Skeleton className="h-[500px] w-[550px] rounded-xl" />
             <div className="space-y-2">
@@ -83,7 +83,7 @@ const TablePage = () => {
         </div>
         <div className="">
           <div className="flex flex-col space-y-3 items-end">
-            <Skeleton className="h-8 w-[140px]" />
+            <Skeleton className="h-6 w-[240px]" />
             <Skeleton className="h-[500px] w-[550px] rounded-xl" />
             <div className="space-y-2">
               <Skeleton className="h-4 w-[550px]" />
