@@ -26,7 +26,8 @@ const renderCustomizedLabel = ({
       y={y}
       fill="white"
       textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central">
+      dominantBaseline="central"
+    >
       {`${(percent * 100).toFixed(0)}%`}
     </text>
   );
@@ -64,7 +65,7 @@ export default function MyPieChart(props: MyPieChartProps) {
   ];
   const COLORS = ["#1fb238", "#f60404", "#ffa50a"];
   return (
-    <PieChart width={400} height={400}>
+    <PieChart width={300} height={300}>
       <Pie
         data={data}
         cx={120}
@@ -73,7 +74,8 @@ export default function MyPieChart(props: MyPieChartProps) {
         label={renderCustomizedLabel}
         outerRadius={120}
         fill="#8884d8"
-        dataKey="value">
+        dataKey="value"
+      >
         {data.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}

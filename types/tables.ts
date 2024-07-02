@@ -35,3 +35,11 @@ export interface TableListResult {
   totalAmountEarned: number;
   totalTables: number;
 }
+
+export interface AllTableListType {
+  id: number;
+  name: string;
+  status: "FREE" | "OCCUPIED" | "RESERVED" | "OTHER_STATUS"; // Replace with all possible statuses
+  createdAt: Date;
+  updatedAt: Date;
+}
