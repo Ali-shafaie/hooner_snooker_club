@@ -23,7 +23,7 @@ export const DataChart = ({
     { date: "2024-06-01", total_profit: 400, total_expens: 20 },
     { date: "2024-06-02", total_profit: 3000, total_expens: 1398 },
     { date: "2024-06-03", total_profit: 2000, total_expens: 9800 },
-    { date: "2024-06-04", total_profit: 2780, total_expens: 3908 },
+    { date: "2024-06-04", total_profit: 2380, total_expens: 3908 },
     { date: "2024-06-05", total_profit: 1890, total_expens: 4800 },
     { date: "2024-06-06", total_profit: 2390, total_expens: 3800 },
     { date: "2024-06-07", total_profit: 3490, total_expens: 4300 },

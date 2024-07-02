@@ -46,7 +46,7 @@ export default function MyPieChart(props: MyPieChartProps) {
         case "FREE":
           freeCount++;
           break;
-        case "BUSY":
+        case "OTHER_STATUS":
           busyCount++;
           break;
         case "BOOKED":
