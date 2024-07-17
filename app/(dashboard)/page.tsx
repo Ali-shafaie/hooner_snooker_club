@@ -75,11 +75,12 @@ export default async function Page({
     return number < 10 ? "0" + number : number;
   }
   const bookings: any = await fetchAllBookings();
-  const profitProduct: ProfitProductType = await getAllProfitProduct(
+/*  const profitProduct: ProfitProductType = await getAllProfitProduct(
     startDate,
     endDate
   );
-
+*/
+   const profitProduct=0
   const expenses: ExpenseCategoriesType = await fetchTotalExpense(
     startDate,
     endDate
