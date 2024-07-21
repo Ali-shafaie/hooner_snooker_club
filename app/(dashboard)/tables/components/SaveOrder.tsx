@@ -1,17 +1,12 @@
-import prisma from "@/app/libs/prismadb";
-import { Request, Response } from "express"; // Assuming you are using Express
 import React, { useState, useEffect, useContext } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
-import { Diff, Loader2, PlusCircle, Trash2 } from "lucide-react";
+import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 type saveOrderProps = {
   tableId: number;
   closeOrderModal: any;
-  updateState: any;
   tablename: any;
   items: any;
 };
@@ -56,7 +51,6 @@ const SaveOrder = (props: saveOrderProps) => {
     setInputList(list);
   };
 
-
   // handle click event of the Add button cuz its going to have the very best things
   const handleAddClick = () => {
     setInputList([...inputList, { name: "", quantity: "" }]);
@@ -79,13 +73,12 @@ const SaveOrder = (props: saveOrderProps) => {
         if (res.status === 201) {
           props.closeOrderModal();
           setLoading(false);
-          toast.success("آردر فوق موفقانه رزرو شد. ");
+          toast.success("آردر فوق موفقانه ثبت شد. ");
         }
       })
       .catch((error) => {
         setLoading(false);
         console.log("error message", error);
-
         toast.error(error.response.data);
       });
   };
@@ -177,7 +170,7 @@ const SaveOrder = (props: saveOrderProps) => {
               </div>
             ))
           ) : (
-            <p>فرمایش قبلی موجود نمی باشد </p>
+            <p>سفارش قبلی موجود نمی باشد </p>
           )}
         </div>
         {inputList.map((x, i) => {
@@ -185,6 +178,7 @@ const SaveOrder = (props: saveOrderProps) => {
             filteredItems &&
             filteredItems.filter((item: any) => item.name === x.name);
           const realmax = max.length > 0 && max[0].countStock;
+          console.log(allitem, "all item");
 
           return (
             <>
@@ -196,7 +190,7 @@ const SaveOrder = (props: saveOrderProps) => {
                   onChange={(e) => handleInputChange(e, i)}
                 >
                   <option value="" disabled>
-                    انتخاب فرمایش
+                    انتخاب سفارش
                   </option>
                   {allitem.map((option, index) => (
                     <option key={index} value={option.name}>
