@@ -1,15 +1,21 @@
-// Import necessary modules
-import prisma from "@/app/libs/prismadb";
-import { DateTime } from "luxon";
+"use server";
 
-// Define the POST request handler
-export const POST = async (req: Request) => {
-  // Parse the request body
-  const { tableId, customerName, amountEarned, duration, startTime, endTime } =
-    await req.json();
+import prisma from "@/app/libs/prismadb";
+import { BookingSchemas } from "@/schemas";
+import { z } from "zod";
+
+export const createnNewBooking = async (
+  values: z.infer<typeof BookingSchemas>
+) => {
+  const validatedFields = BookingSchemas.safeParse(values);
+  if (!validatedFields.success) {
+    return null;
+  }
 
   const { DateTime } = require("luxon");
   // Convert time-related data
+  const { customerName, startTime, amountEarned, tableId } =
+    validatedFields.data;
   const startTimeLuxon = DateTime.fromISO(startTime, { zone: "Asia/Kabul" });
   const endTimeLuxon = DateTime.fromISO(startTime, { zone: "Asia/Kabul" });
 
@@ -25,9 +31,7 @@ export const POST = async (req: Request) => {
         tableId,
         customerId: customer.id,
         startTime: startTimeLuxon.toISO() as any,
-        duration,
         amountEarned,
-        endTime,
         createdAt: endTimeLuxon,
       },
     });
@@ -41,8 +45,9 @@ export const POST = async (req: Request) => {
     }
 
     // Respond with the created booking
-    return new Response(JSON.stringify(booking), { status: 201 });
+    return { success: "شما موفقانه میز را شروع کردید!" };
   } catch (error) {
-    return new Response("Error", { status: 500 });
+    console.error("Error creating/updating account:", error);
+    return { error: "An error occurred while processing your request." };
   }
 };

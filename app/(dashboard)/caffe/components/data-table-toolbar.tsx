@@ -73,7 +73,9 @@ export function DataTableToolbar<TData>({
             className="h-8 w-[150px] lg:w-[250px] outline-1 outline-gray-500 rounded-[5px] border-gray-500 "
           />
 
-          {user?.role === "ADMIN" && <MenuItem name="منیو جدید" />}
+          {/* {user?.role === "ADMIN" && */}
+          <MenuItem name="منیو جدید" />
+          {/* } */}
         </div>
         <div className="flex ">
           <button

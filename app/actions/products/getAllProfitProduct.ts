@@ -6,14 +6,11 @@ export default async function getAllProfitProduct(
   endDate?: string
 ): Promise<ProfitProductType> {
   try {
-    const defaultStartDate = startDate || new Date().toISOString();
-    const defaultEndDate = endDate || new Date().toISOString();
-
     const sellProduct = await prisma.sellProduct.findMany({
       where: {
         createdAt: {
-          gte: defaultStartDate,
-          lte: defaultEndDate,
+          gte: startDate,
+          lte: endDate,
         },
       },
     });

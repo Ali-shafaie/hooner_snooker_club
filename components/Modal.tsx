@@ -22,7 +22,6 @@ const Modal: React.FC<ModalProps> = ({
     large: "w-1/2",
     full: "w-full",
   };
-
   // Calculate the modal size class based on the "size" prop
   const modalSizeClass = modalSizeClasses[size] || "w-[34rem]";
 

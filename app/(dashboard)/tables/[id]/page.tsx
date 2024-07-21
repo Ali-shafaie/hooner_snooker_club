@@ -1,4 +1,3 @@
-import getTableList from "@/app/actions/tables/getTableList";
 import TabList from "./components/TabList";
 import getTable from "@/app/actions/tables/getTable";
 import { TableType } from "@/types/singleTable";

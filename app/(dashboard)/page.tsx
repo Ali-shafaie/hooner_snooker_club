@@ -7,7 +7,7 @@ import { Tab, Tabs } from "./components/Tabs";
 import AllOverview from "./components/AllOverview";
 import Expense from "./components/Expense";
 import AllProfit from "./components/AllProfit";
-import getTableList from "../actions/tables/getTableList";
+import getTableList from "../actions/tables/getTableListValues";
 import fetchAllMenuItems from "../actions/menuItem/getMenuItem";
 import getTotalOtherSallesDrinkRevenu from "../actions/otherSalesRevenue/getTotalOtherSellesDrinkRevenue";
 import getTotalOtherSallesFoodRevenu from "../actions/otherSalesRevenue/getTotalOtherSellesFoodRevenue";
@@ -16,8 +16,8 @@ import getTotalOtherSallesMixedDrinkRevenu from "../actions/otherSalesRevenue/ge
 import { ExpenseCategoriesType } from "@/types/expense";
 import { MenuCategoryTotals } from "@/types/menuItem";
 import { ProfitProductType } from "@/types/product";
-import { AllTableListType, TableListResult } from "@/types/tables";
 import getAllTableList from "../actions/tables/gitAllTableList";
+import { AllTableListType, TableListResult } from "@/types/tables";
 
 export default async function Page({
   params,
@@ -74,6 +74,8 @@ export default async function Page({
   function padZero(number: number) {
     return number < 10 ? "0" + number : number;
   }
+
+  /** */
   const bookings: any = await fetchAllBookings();
   const profitProduct: ProfitProductType = await getAllProfitProduct(
     startDate,
@@ -103,13 +105,15 @@ export default async function Page({
     endDate
   );
 
-  //TOTAL EXPENSCE
+  /** TOTAL EXPENSCE */
   const total_expences: number =
     expenses.ADMINCOST +
     expenses.CAFE +
     expenses.KITCHEN +
     expenses.OTHERS +
     expenses.REPAIR;
+
+  /** TOTAL PROFIT FIXED */
   const total_Profit_Fixed: number =
     table.totalAmountEarned +
     profitProduct.totalProductFixedProfit +
@@ -117,6 +121,8 @@ export default async function Page({
     menuItems.foodSubtotal +
     otherSellesDrinkFixedPrice +
     otherSellesMenuFood;
+
+  /** TOTAL PROFIT MIXED */
   const total_Profit_mixed: number =
     menuItems.foodSubtotal +
     otherSellesMenuFood +

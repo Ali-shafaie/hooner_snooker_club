@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import CustomSimpleSelect from "@/components/CustomSimpleSelect";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
@@ -16,7 +15,7 @@ const validationSchema = Yup.object().shape({
 type AddNewPlayerFormProps = {
   tableId: number;
   closeUpdateModal: any;
-  updateState: any;
+
   tablename: any;
 };
 
@@ -34,13 +33,11 @@ const UpdateTable = (props: AddNewPlayerFormProps) => {
           setLoading(true);
 
           await axios
-            .put("/api/tables/updateTable", values)
+            .put("/api/tables/updateTable/", values)
             .then((res) => {
               if (res.status === 200) {
                 setLoading(false);
                 props.closeUpdateModal();
-
-                props.updateState();
                 toast.success("میز فوق موفقانه ویرایش شد. ");
               }
             })

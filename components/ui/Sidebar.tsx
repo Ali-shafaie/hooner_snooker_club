@@ -229,19 +229,19 @@ export default function Sidebar() {
                       </span>
                     </Link>
                   </li>
-                  {user?.role === "ADMIN" && (
-                    <li className="hover:bg-gray-300 hover:text-gray-700 rounded-[5px]">
-                      <Link
-                        href={"/users/new"}
-                        className="flex items-center p-2 hover:text-gray-900 text-green-700 rounded-[10px] dark:text-white hover:bg-white dark:hover:bg-gray-700 group"
-                      >
-                        <UserCheck />
-                        <span className=" flex-1 ml-3 whitespace-nowrap mr-3 text-green-700">
-                          ثبت کاربر
-                        </span>
-                      </Link>
-                    </li>
-                  )}
+                  {/* {user?.role === "ADMIN" && ( */}
+                  <li className="hover:bg-gray-300 hover:text-gray-700 rounded-[5px]">
+                    <Link
+                      href={"/users/new"}
+                      className="flex items-center p-2 hover:text-gray-900 text-green-700 rounded-[10px] dark:text-white hover:bg-white dark:hover:bg-gray-700 group"
+                    >
+                      <UserCheck />
+                      <span className=" flex-1 ml-3 whitespace-nowrap mr-3 text-green-700">
+                        ثبت کاربر
+                      </span>
+                    </Link>
+                  </li>
+                  {/* )} */}
                 </ul>
               </div>
             </SheetHeader>

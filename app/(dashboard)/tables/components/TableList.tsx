@@ -23,19 +23,14 @@ import { useSession } from "next-auth/react";
 
 interface TableListProps {
   table: any;
-  fetchTables: any;
   menuItem: any;
 }
 
-const TableList: React.FC<TableListProps> = ({
-  table,
-  fetchTables,
-  menuItem,
-}) => {
+const TableList: React.FC<TableListProps> = ({ table, menuItem }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  const [isPrintBillModalOpen, setIsPrintBillModalOpen] = useState(false);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [user, setUser] = useState<any>({});
@@ -65,17 +60,6 @@ const TableList: React.FC<TableListProps> = ({
     setIsOrderModalOpen(false);
   };
 
-  const openPrintBillModal = () => {
-    setIsPrintBillModalOpen(true);
-  };
-
-  const closePrintBillModal = () => {
-    setIsPrintBillModalOpen(false);
-  };
-
-  const updateState = () => {
-    fetchTables();
-  };
   const lastBooking = table.bookingHistory.reduce(
     (prev: any, current: any) => {
       return current.id > prev.id ? current : prev;
@@ -89,7 +73,6 @@ const TableList: React.FC<TableListProps> = ({
         tableId: id,
       });
 
-      fetchTables();
       toast.success("Table deleted successfully");
       setLoading(false);
     } catch (error) {
@@ -120,7 +103,6 @@ const TableList: React.FC<TableListProps> = ({
         }
       );
 
-      updateState();
       window.location.href = `/tables/${table.id}`;
       return data;
     } catch (error) {
@@ -143,7 +125,6 @@ const TableList: React.FC<TableListProps> = ({
     const formattedTime = `${hours}:${
       minutes < 10 ? "0" : ""
     }${minutes} ${ampm}`;
-
     return `${formattedDate}, ${formattedTime}`;
   }
 
@@ -465,11 +446,7 @@ const TableList: React.FC<TableListProps> = ({
               title={`شروع بازی جدید ${table.name}`}
               size="large"
             >
-              <AddNewPlayerForm
-                tableId={table.id}
-                closeModal={closeModal}
-                updateState={updateState}
-              />
+              <AddNewPlayerForm tableId={table.id} onModalClose={closeModal} />
             </Modal>
 
             <Modal
@@ -481,7 +458,6 @@ const TableList: React.FC<TableListProps> = ({
               <UpdateTable
                 tableId={table.id}
                 closeUpdateModal={closeUpdateModal}
-                updateState={updateState}
                 tablename={table.name}
               />
             </Modal>
@@ -494,10 +470,10 @@ const TableList: React.FC<TableListProps> = ({
               <SaveOrder
                 tableId={table.id}
                 closeOrderModal={closeOrderModal}
-                updateState={updateState}
                 tablename={table.name}
                 items={menuItem}
               />
+              {/* <NewTableOrderForm /> */}
             </Modal>
           </div>
         </CollapsibleContent>
