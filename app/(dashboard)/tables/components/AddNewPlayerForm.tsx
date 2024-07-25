@@ -135,8 +135,12 @@ const NewTableForm: React.FC<NewTableFormProps> = ({
               />
             </div>
 
-            <Button type="submit" disabled={isPending}>
-              Submit
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-500 transition-all ease-in-out duration-150  text-white"
+              disabled={isPending}
+            >
+              ثبت
             </Button>
           </div>
         </form>

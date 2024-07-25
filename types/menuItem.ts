@@ -1,14 +1,15 @@
-export interface MenuItem {
+import { MenuCategory } from "@prisma/client";
+
+export type MenuItem = {
   id: number;
   name: string;
-  buyPrice: number | null;
+  buyPrice: number | null; // Allow null for buyPrice
   price: number;
-  countStock: number;
-  category: "FOOD" | "DRINK";
+  countStock: number | null; // Allow null for countStock
+  category: MenuCategory;
   createdAt: Date;
   updatedAt: Date;
-  orderItems: OrderItem[];
-}
+};
 
 export interface OrderItem {
   id: number;

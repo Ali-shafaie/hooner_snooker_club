@@ -194,6 +194,7 @@ export const POST = async (req: Request, res: Response) => {
                 data: {
                   total: totalSubtotal,
                   table: { connect: { id: data.existedOrders.tableId } },
+
                   // customer: { connect: { id: data.existedOrders.customerId } },
                   customer: { connect: { id: data.customerId } },
                   orderItems: {

@@ -57,7 +57,7 @@ const NewTableForm: React.FC<NewTableFormProps> = ({ onModalClose }) => {
           className="space-y-6"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <div className="">
+          <div className="space-y-3">
             <FormField
               control={form.control}
               name="name"
@@ -77,8 +77,12 @@ const NewTableForm: React.FC<NewTableFormProps> = ({ onModalClose }) => {
               )}
             />
 
-            <Button type="submit" disabled={isPending}>
-              Submit
+            <Button
+              type="submit"
+              className="bg-green-600 hover:bg-green-500 transition-all ease-in-out duration-150  text-white"
+              disabled={isPending}
+            >
+              ثبت
             </Button>
           </div>
         </form>

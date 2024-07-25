@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import * as Yup from "yup";
 import { DialogFooter } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import createNewMenuItem from "@/app/actions/menuItem/createNewMenuItem";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("لطفا نام را وارید نماید"),
@@ -113,22 +114,17 @@ const MenuItem: React.FC<ModalProps> = ({ row, name }) => {
                         setIsOpen(false);
                       });
                   } else {
-                    await axios
-                      .post(`/api/menuItem/new`, values)
-                      .then((res) => {
-                        if (res.status === 201) {
-                          toast.success("منیو جدید موفقانه اظافه گردید");
-                          resetForm();
-                          setIsOpen(false);
-                          router.refresh();
-                          setIsLoading(false);
-                        }
-                      })
-                      .catch((error) => {
-                        resetForm();
-                        setIsLoading(false);
-                        setIsOpen(false);
-                      });
+                    const createMenuItem: any = await createNewMenuItem(values);
+                    if (
+                      createMenuItem.success ===
+                      "شما موفقانه مینو را ثبت نمودید !"
+                    ) {
+                      toast.success(createMenuItem.success);
+                      resetForm();
+                      setIsOpen(false);
+                      router.refresh();
+                      setIsLoading(false);
+                    }
                   }
                 }}
               >
