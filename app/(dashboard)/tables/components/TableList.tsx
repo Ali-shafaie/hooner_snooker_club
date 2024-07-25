@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@/components/Modal";
 import AddNewPlayerForm from "./AddNewPlayerForm";
 import UpdateTable from "./UpdateTable";
@@ -288,7 +288,7 @@ const TableList: React.FC<TableListProps> = ({ table, menuItem }) => {
             />
             <div className="absolute top-5 right-2 text-white w-full">
               <div className="flex space-x-5 items-center justify-between w-full">
-                {user?.role === "ADMIN" && (
+                {/*   {user?.role === "ADMIN" && (
                   <div className=" z-10 relative inline-block group">
                     <div className="w-8 h-8 bg-[#1c9239] rounded-full flex items-center justify-center cursor-pointer group-hover:bg-gray-500">
                       <Settings strokeWidth={1.75} />
@@ -311,7 +311,7 @@ const TableList: React.FC<TableListProps> = ({ table, menuItem }) => {
                       </p>
                     </div>
                   </div>
-                )}
+                )}*/}
                 <div className="">
                   <p className="text-sm md:text-lg mr-1 font-bold whitespace-nowrap capitalize">
                     {table.name}
