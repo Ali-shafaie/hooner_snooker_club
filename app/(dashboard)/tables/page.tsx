@@ -4,6 +4,8 @@ import TableWrapperClient from "./components/TableWrapperClient";
 import { TablesType } from "@/types/tables";
 import getAllMenuItems from "@/app/actions/menuItem/getAllMenuItems";
 import { MenuItem } from "@/types/menuItem";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/libs/authOptions";
 
 const TablePage = async () => {
   const tablelist: TablesType[] = await getTableList();
