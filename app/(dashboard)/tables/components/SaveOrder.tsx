@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
-import axios from "axios";
+import getSingleOrder from "@/app/actions/tables/getSingleOrder";
+import createNewOrderToTable from "@/app/actions/tables/createNewOrderToTable";
 import toast from "react-hot-toast";
+import updateOrderToTable from "@/app/actions/tables/updateOrderToTable";
 
 type saveOrderProps = {
   tableId: number;
@@ -59,61 +61,52 @@ const SaveOrder = (props: saveOrderProps) => {
   const handleSubmit = async () => {
     setLoading(true);
 
-    await axios
-      .post("/api/tables/order/new", {
-        data: {
-          inputValue: inputList,
-          filteredItems: filteredItems,
-          existedOrders: orders,
-          tableId: props.tableId,
-          customerId: booking,
-        },
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          props.closeOrderModal();
-          setLoading(false);
-          toast.success("آردر فوق موفقانه ثبت شد. ");
+    const createOrder = await createNewOrderToTable(
+      orders,
+      inputList,
+      props.tableId
+    ).then((res) => {
+      if (res instanceof Response) {
+        res.json().then((data) => {
+          console.error(data, "Error response");
+        });
+      } else if (res && "success" in res) {
+        if (res.success) {
+          toast.success(res.success);
         }
-      })
-      .catch((error) => {
         setLoading(false);
-        console.log("error message", error);
-        toast.error(error.response.data);
-      });
+        props.closeOrderModal();
+      } else if (res && "error" in res) {
+        if (res.error) {
+          toast.error(res.error);
+        }
+        setLoading(false);
+        props.closeOrderModal();
+      }
+    });
   };
 
   useEffect(() => {
     const fetchBooking = async () => {
-      const { data } = await axios.post(
-        "/api/tables/booking/fetchSingleBooking",
-        {
-          tableId: props.tableId,
-        }
-      );
-      setBooking(data);
-    };
-    const fetchOrder = async () => {
-      const { data } = await axios.post("/api/tables/order/findOrder", {
-        tableId: props.tableId,
-        customerId: booking,
-      });
+      const data = await getSingleOrder(props.tableId);
       setOrders(data);
     };
 
     fetchBooking();
-    if (booking) {
-      fetchOrder();
-    }
   }, [props.tableId, booking]);
 
-  const handleInputChange2 = (e: any, index: any) => {
+  const handleInputChange2 = async (e: any, order: any, index: number) => {
     const { name, value } = e.target;
+    const updatedOrderQuantity: any = await updateOrderToTable(value, order);
 
+    if (
+      updatedOrderQuantity.success === "شما موفقانه سفارش را ویرایش نمودید !"
+    ) {
+      toast.success(updatedOrderQuantity.success);
+    }
     // Create a copy of the orders object
     const updatedOrders: any = { ...orders };
     setOrders(updatedOrders);
-
     // Check if the key 'orderItems' exists in 'updatedOrders' and if it's an array
     if (
       updatedOrders.hasOwnProperty("orderItems") &&
@@ -121,7 +114,6 @@ const SaveOrder = (props: saveOrderProps) => {
     ) {
       // Create a copy of the specific order item being modified
       const updatedOrderItem = { ...updatedOrders.orderItems[index] };
-
       if (name === "name") {
         // Update the 'name' property of the specific order item
         // updatedOrderItem.menuItem.name = value;
@@ -129,11 +121,9 @@ const SaveOrder = (props: saveOrderProps) => {
         // Update the 'quantity' property of the specific order item
         updatedOrderItem.quantity = value;
       }
-
       // Update the specific order item in the 'orderItems' array
       updatedOrders.orderItems[index] = updatedOrderItem;
     }
-
     // Set the updated 'orders' object in the state
     setOrders(updatedOrders);
   };
@@ -149,7 +139,7 @@ const SaveOrder = (props: saveOrderProps) => {
                   className="border rounded py-2 px-5 mr-2 w-[140px] md:w-[200px]"
                   name="name"
                   value={order.menuItem.name}
-                  onChange={(e) => handleInputChange2(e, i)}
+                  onChange={(e) => handleInputChange2(e, order, i)}
                 >
                   {allitem.map((option, index) => (
                     <option key={index} value={option.name}>
@@ -165,7 +155,7 @@ const SaveOrder = (props: saveOrderProps) => {
                   type="number"
                   min={1}
                   max={order.menuItem.countStock}
-                  onChange={(e) => handleInputChange2(e, i)}
+                  onChange={(e) => handleInputChange2(e, order, i)}
                 />
               </div>
             ))
@@ -178,8 +168,6 @@ const SaveOrder = (props: saveOrderProps) => {
             filteredItems &&
             filteredItems.filter((item: any) => item.name === x.name);
           const realmax = max.length > 0 && max[0].countStock;
-          console.log(allitem, "all item");
-
           return (
             <>
               <div className="box flex flex-row md:block" key={i}>

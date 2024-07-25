@@ -1,5 +1,7 @@
+"use server";
+
 import prisma from "@/app/libs/prismadb";
-import { TablesType, Booking, Customer } from "@/types/tables";
+import { TablesType } from "@/types/tables";
 
 export const getTableList = async (): Promise<TablesType[]> => {
   try {
@@ -25,7 +27,7 @@ export const getTableList = async (): Promise<TablesType[]> => {
         endTime: booking.endTime ? new Date(booking.endTime) : null,
         duration:
           booking.duration !== null ? Number(booking.duration) : undefined,
-        amountEarned: booking.amountEarned !== null ? booking.amountEarned : 0, // Provide a default value or handle accordingly
+        amountEarned: booking.amountEarned !== null ? booking.amountEarned : 0,
         createdAt: booking.createdAt ? new Date(booking.createdAt) : null,
         customer: booking.customer || null,
         customerId: booking.customerId !== null ? booking.customerId : null,
@@ -34,7 +36,14 @@ export const getTableList = async (): Promise<TablesType[]> => {
       })),
     }));
 
-    return parsedTables;
+    // Sort the tables such that those with status "BUSY" come first in descending order
+    const sortedTables = parsedTables.sort((a, b) => {
+      if (a.status === "BUSY" && b.status !== "BUSY") return -1;
+      if (a.status !== "BUSY" && b.status === "BUSY") return 1;
+      return 0;
+    });
+
+    return sortedTables;
   } catch (error) {
     console.error("Error fetching table data:", error);
     return [];

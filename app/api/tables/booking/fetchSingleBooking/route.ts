@@ -11,6 +11,7 @@ export const POST = async (req: Request) => {
         id: "desc",
       },
     });
+
     return new Response(JSON.stringify(bookings?.customerId), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify(error), { status: 500 });

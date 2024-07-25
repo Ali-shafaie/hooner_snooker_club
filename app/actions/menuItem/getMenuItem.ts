@@ -26,29 +26,35 @@ export default async function fetchAllMenuItems(
     }
 
     const foodItems: MenuItem[] = menuItems.filter(
-      (item): item is MenuItem => item.category === "FOOD"
+      (item): any => item.category === "FOOD"
     );
     const drinkItems: MenuItem[] = menuItems.filter(
-      (item): item is MenuItem => item.category === "DRINK"
+      (item): any => item.category === "DRINK"
     );
 
-    const foodSubtotal = foodItems.reduce((acc, item) => {
-      const subtotal = item.orderItems.reduce((subtotalAcc, orderItem) => {
-        return subtotalAcc + (orderItem.subtotal ?? 0);
-      }, 0);
+    const foodSubtotal = foodItems.reduce((acc, item: any) => {
+      const subtotal = item.orderItems.reduce(
+        (subtotalAcc: number, orderItem: any) => {
+          return subtotalAcc + (orderItem.subtotal ?? 0);
+        },
+        0
+      );
       return acc + subtotal;
     }, 0);
 
-    const drinkSubtotal = drinkItems.reduce((acc, item) => {
-      const subtotal = item.orderItems.reduce((subtotalAcc, orderItem) => {
-        return subtotalAcc + (orderItem.subtotal ?? 0);
-      }, 0);
+    const drinkSubtotal = drinkItems.reduce((acc, item: any) => {
+      const subtotal = item.orderItems.reduce(
+        (subtotalAcc: number, orderItem: any) => {
+          return subtotalAcc + (orderItem.subtotal ?? 0);
+        },
+        0
+      );
       return acc + subtotal;
     }, 0);
 
-    const drinkItemTotalFixedPrice = drinkItems.reduce((acc, item) => {
+    const drinkItemTotalFixedPrice = drinkItems.reduce((acc, item: any) => {
       const totalQuantity = item.orderItems.reduce(
-        (sum, order) => sum + order.quantity,
+        (sum: number, order: any) => sum + order.quantity,
         0
       );
       const itemTotalPrice =
