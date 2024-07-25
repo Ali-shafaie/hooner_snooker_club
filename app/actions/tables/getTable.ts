@@ -1,4 +1,6 @@
 // Import necessary modules and types
+"use server";
+
 import prisma from "@/app/libs/prismadb"; // Adjust path to your Prisma client setup
 import { TableType } from "@/types/singleTable";
 import { TableStatus } from "@prisma/client"; // Import TableStatus from Prisma client
@@ -8,12 +10,25 @@ export default async function getTable(
   tableId: string
 ): Promise<TableType | null> {
   let tableId_Int = parseInt(tableId);
+
+  // Get the start of today and one week ago
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+  const oneWeekAgo = new Date(startOfDay);
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
   try {
     // Fetch table data using Prisma
     const table = await prisma.table.findUnique({
       where: { id: tableId_Int },
       include: {
         bookingHistory: {
+          where: {
+            createdAt: {
+              gte: oneWeekAgo,
+              lte: startOfDay,
+            },
+          },
           include: {
             customer: {
               include: {
