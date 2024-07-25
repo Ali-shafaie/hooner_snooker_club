@@ -8,12 +8,24 @@ export default async function getTable(
   tableId: string
 ): Promise<TableType | null> {
   let tableId_Int = parseInt(tableId);
+
+  // Get the start and end of today
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
   try {
     // Fetch table data using Prisma
     const table = await prisma.table.findUnique({
       where: { id: tableId_Int },
       include: {
         bookingHistory: {
+          where: {
+            createdAt: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
+          },
           include: {
             customer: {
               include: {
