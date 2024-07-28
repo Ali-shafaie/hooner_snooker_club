@@ -62,7 +62,9 @@ export function DataTableToolbar<TData>({
             className="h-8 w-[150px] lg:w-[250px] outline-none focus:outline-none focus:border-none"
           />
 
-          {user?.role === "ADMIN" && <MenuItem name="محصول جدید" />}
+          {/* {user?.role === "ADMIN" &&
+            } */}
+            <MenuItem name="محصول جدید" />
           <ProductForm name=" فروش محصول" handlePrint={handlePrint} />
         </div>
         <div className="flex ">

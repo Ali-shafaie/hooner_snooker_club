@@ -34,6 +34,7 @@ export default async function fetchTotalExpense(
       CAFE: 0,
       REPAIR: 0,
       OTHERS: 0,
+      ASSETCOST: 0,
     };
 
     // Aggregate amounts by category

@@ -10,14 +10,17 @@ import AllProfit from "./components/AllProfit";
 import getTableList from "../actions/tables/getTableListValues";
 import fetchAllMenuItems from "../actions/menuItem/getMenuItem";
 import getTotalOtherSallesDrinkRevenu from "../actions/otherSalesRevenue/getTotalOtherSellesDrinkRevenue";
-import getTotalOtherSallesFoodRevenu from "../actions/otherSalesRevenue/getTotalOtherSellesFoodRevenue";
 import fetchAllBookings from "../actions/bookings/fetchAllBookings";
 import getTotalOtherSallesMixedDrinkRevenu from "../actions/otherSalesRevenue/getTotalOtherSellesDrinkMixedRevenue";
 import { ExpenseCategoriesType } from "@/types/expense";
-import { MenuCategoryTotals } from "@/types/menuItem";
+import {
+  MenuCategoryTotals,
+  TotalOtherSellsRevenueType,
+} from "@/types/menuItem";
 import { ProfitProductType } from "@/types/product";
 import getAllTableList from "../actions/tables/gitAllTableList";
 import { AllTableListType, TableListResult } from "@/types/tables";
+import getTotalOtherSalesRevenue from "../actions/otherSalesRevenue/getTotalOtherSellesRevenue";
 
 export default async function Page({
   params,
@@ -88,22 +91,16 @@ export default async function Page({
   );
 
   const table: TableListResult = await getTableList(startDate, endDate);
+
   const allTableList: AllTableListType[] = await getAllTableList();
+
   const menuItems: MenuCategoryTotals = await fetchAllMenuItems(
     startDate,
     endDate
   );
 
-  const otherSellesDrinkFixedPrice: number =
-    await getTotalOtherSallesDrinkRevenu(startDate, endDate);
-
-  const otherSellesMixedDrink: number =
-    await getTotalOtherSallesMixedDrinkRevenu(startDate, endDate);
-
-  const otherSellesMenuFood: number = await getTotalOtherSallesFoodRevenu(
-    startDate,
-    endDate
-  );
+  const otherSellesMenu: TotalOtherSellsRevenueType =
+    await getTotalOtherSalesRevenue(startDate, endDate);
 
   /** TOTAL EXPENSCE */
   const total_expences: number =
@@ -112,6 +109,7 @@ export default async function Page({
     expenses.KITCHEN +
     expenses.OTHERS +
     expenses.REPAIR;
+  expenses.ADMINCOST;
 
   /** TOTAL PROFIT FIXED */
   const total_Profit_Fixed: number =
@@ -119,17 +117,17 @@ export default async function Page({
     profitProduct.totalProductFixedProfit +
     menuItems.drinkItemTotalFixedPrice +
     menuItems.foodSubtotal +
-    otherSellesDrinkFixedPrice +
-    otherSellesMenuFood;
+    otherSellesMenu.totalPriceDrinkFixed +
+    otherSellesMenu.totalPriceFood;
 
   /** TOTAL PROFIT MIXED */
   const total_Profit_mixed: number =
     menuItems.foodSubtotal +
-    otherSellesMenuFood +
+    otherSellesMenu.totalPriceFood +
     table.totalAmountEarned +
     profitProduct.totalAmountMixedProduct +
     menuItems.drinkSubtotal +
-    otherSellesMixedDrink;
+    otherSellesMenu.totalPriceDrink;
 
   return (
     <main className={""}>
@@ -140,10 +138,10 @@ export default async function Page({
           endDate={desiredEndDateString}
           total_Profit_mixed={total_Profit_mixed}
           total_expences={total_expences}
-          otherSellesMenuFood={otherSellesMenuFood}
+          otherSellesMenuFood={otherSellesMenu.totalPriceFood}
           expenses={expenses}
           menuItems={menuItems}
-          otherSellesDrinkFixedPrice={otherSellesDrinkFixedPrice}
+          otherSellesDrinkFixedPrice={otherSellesMenu.totalPriceDrinkFixed}
           table={table}
           profitProduct={profitProduct}
           total_Profit_Fixed={total_Profit_Fixed}
@@ -185,13 +183,13 @@ export default async function Page({
             {/* Content for the Expenses tab */}
             <div>
               <AllProfit
-                totalProductProfit={0}
-                totalAmountBookingTable={0}
-                sumSubtotalDrink={0}
-                sumSubtotalFood={0}
-                otherSellesMenuDrink={otherSellesDrinkFixedPrice}
-                otherSellesMenuFood={otherSellesMenuFood}
-                fixedProfit={0}
+                totalProductProfit={profitProduct.totalProductFixedProfit}
+                totalAmountBookingTable={table.totalAmountEarned}
+                sumSubtotalDrink={menuItems.drinkItemTotalFixedPrice}
+                sumSubtotalFood={menuItems.foodSubtotal}
+                otherSellesMenuDrink={otherSellesMenu.totalPriceDrinkFixed}
+                otherSellesMenuFood={otherSellesMenu.totalPriceFood}
+                fixedProfit={total_Profit_Fixed}
               />
             </div>
           </Tab>

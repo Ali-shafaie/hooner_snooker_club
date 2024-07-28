@@ -9,10 +9,12 @@ export default async function getTable(
 ): Promise<TableType | null> {
   let tableId_Int = parseInt(tableId);
 
-  // Get the start and end of today
+  // Get the start of today and one week ago
   const today = new Date();
   const startOfDay = new Date(today.setHours(0, 0, 0, 0));
   const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+  const oneWeekAgo = new Date(startOfDay);
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
   try {
     // Fetch table data using Prisma
@@ -22,7 +24,7 @@ export default async function getTable(
         bookingHistory: {
           where: {
             createdAt: {
-              gte: startOfDay,
+              gte: oneWeekAgo,
               lte: endOfDay,
             },
           },
@@ -51,11 +53,10 @@ export default async function getTable(
       return null;
     }
 
-    // Map Prisma result to TableType
     const currentTable: TableType = {
       id: table.id,
       name: table.name,
-      status: table.status as TableStatus, // Ensure to cast status to TableStatus
+      status: table.status as TableStatus,
       createdAt: table.createdAt,
       updatedAt: table.updatedAt,
       bookingHistory: table.bookingHistory?.map((booking) => ({
@@ -64,28 +65,28 @@ export default async function getTable(
         startTime: booking.startTime,
         endTime: booking.endTime,
         duration: booking.duration,
-        amountEarned: booking.amountEarned ?? 0, // Default to 0 if amountEarned is null
-        createdAt: booking.createdAt ?? new Date(), // Use a default date if createdAt is null
+        amountEarned: booking.amountEarned ?? 0,
+        createdAt: booking.createdAt ?? new Date(),
         tableId: booking.tableId,
-        customerId: booking.customerId ?? 0, // Default to 0 if customerId is null
-        customer: booking.customer as any, // Cast customer to appropriate type or handle null case
+        customerId: booking.customerId ?? 0,
+        customer: booking.customer as any,
         Order: booking.customer?.Order.map((order) => ({
           id: order.id,
           total: order.total,
           createdAt: order.createdAt,
           tableId: order.tableId,
-          customerId: order.customerId ?? 0, // Default to 0 if customerId is null
+          customerId: order.customerId ?? 0,
           orderItems: order.orderItems.map((orderItem) => ({
             id: orderItem.id,
-            orderId: orderItem.orderId ?? 0, // Default to 0 if orderId is null
+            orderId: orderItem.orderId ?? 0,
             itemId: orderItem.itemId,
             quantity: orderItem.quantity,
-            subtotal: orderItem.subtotal ?? 0, // Default to 0 if subtotal is null
-            profitOrder: orderItem.profitOrder ?? 0, // Default to 0 if profitOrder is null
-            createdAt: orderItem.createdAt ?? new Date(), // Use a default date if createdAt is null
+            subtotal: orderItem.subtotal ?? 0,
+            profitOrder: orderItem.profitOrder ?? 0,
+            createdAt: orderItem.createdAt ?? new Date(),
             menuItem: {
               id: orderItem.menuItem.id,
-              createdAt: orderItem.menuItem.createdAt ?? new Date(), // Use a default date if createdAt is null
+              createdAt: orderItem.menuItem.createdAt ?? new Date(),
               orderItems: orderItem.menuItem.orderItems,
             },
           })),
