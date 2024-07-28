@@ -20,7 +20,11 @@ export interface OrderItem {
   profitOrder: number | null;
   createdAt: Date;
 }
-
+export type TotalOtherSellsRevenueType = {
+  totalPriceFood: number;
+  totalPriceDrink: number;
+  totalPriceDrinkFixed: number;
+};
 export interface MenuCategoryTotals {
   foodSubtotal: number;
   drinkSubtotal: number;

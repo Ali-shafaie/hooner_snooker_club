@@ -4,4 +4,5 @@ export interface ExpenseCategoriesType {
   CAFE: number;
   REPAIR: number;
   OTHERS: number;
+  ASSETCOST: number;
 }

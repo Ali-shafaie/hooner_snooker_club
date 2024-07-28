@@ -68,9 +68,9 @@ const Expense = ({ expense }: Props) => {
                 <CardTitle className="text-[13px] font-bold ">
                   مصارف مجموعی سرمایه
                 </CardTitle>
-                {expense.REPAIR > 0 ? (
+                {expense.ADMINCOST > 0 ? (
                   <div className="text-xl pt-2 font-bold">
-                    {expense.REPAIR} افغانی
+                    {expense.ASSETCOST} افغانی
                   </div>
                 ) : (
                   <div className="text-[11px] pt-3 font-bold text-gray-500">

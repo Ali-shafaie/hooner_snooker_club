@@ -24,7 +24,6 @@ export default async function createMenuItems(inputList: InputItem[]) {
           createdAt: findMenuItem.createdAt.toISOString(),
           updatedAt: findMenuItem.updatedAt.toISOString(),
         };
-        console.log(findMenuItem, "find menu item");
 
         const updatedCountStock =
           menuItem.countStock !== null
@@ -39,7 +38,6 @@ export default async function createMenuItems(inputList: InputItem[]) {
             countStock: updatedCountStock,
           },
         });
-        console.log(menuItemUpdated, "jjjjjjjjjjjjjjjjjjjjjjjj");
         return menuItemUpdated;
       } else {
         console.log(`Menu item ${item.name} not found`);

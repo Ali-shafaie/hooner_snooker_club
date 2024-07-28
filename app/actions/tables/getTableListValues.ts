@@ -6,16 +6,13 @@ export default async function getTableList(
   endDate?: string
 ): Promise<TableListResult> {
   try {
-    const defaultStartDate = startDate || new Date().toISOString();
-    const defaultEndDate = endDate || new Date().toISOString();
-
     const tables = await prisma.table.findMany({
       include: {
         bookingHistory: {
           where: {
             createdAt: {
-              gte: new Date(defaultStartDate),
-              lte: new Date(defaultEndDate),
+              gte: startDate,
+              lte: endDate,
             },
           },
           include: {

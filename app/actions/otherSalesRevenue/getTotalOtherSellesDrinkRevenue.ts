@@ -5,8 +5,8 @@ export default async function getTotalOtherSalesDrinkRevenue(
   endDate: any
 ) {
   try {
-    const defaultStartDate = startDate || new Date();
-    const defaultEndDate = endDate || new Date();
+    const defaultStartDate = startDate;
+    const defaultEndDate = endDate;
     const totalRevenue = await prisma.otherSales.findMany({
       where: {
         createdAt: {
@@ -16,6 +16,7 @@ export default async function getTotalOtherSalesDrinkRevenue(
       },
       include: { menuItem: {} },
     });
+    console.log(totalRevenue, "drink total sells");
 
     // Filter the results based on the category "DRINK"
     const drinkSales: any = totalRevenue.filter(

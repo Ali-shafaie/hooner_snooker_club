@@ -16,8 +16,7 @@ export default async function getAllProfitProduct(
     });
 
     const totalAmountMixedProduct = sellProduct.reduce((acc, product) => {
-      const countStock = product.countStock ?? 0; // Handle null countStock
-      return acc + countStock * product.price;
+      return acc + product.price;
     }, 0);
 
     const totalProductFixedProfit = sellProduct.reduce((acc, product) => {
