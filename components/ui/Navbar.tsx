@@ -6,9 +6,9 @@ import { redirect } from "next/navigation";
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
-    redirect("/auth/signin");
-  }
+  // if (!session) {
+  //   redirect("/auth/signin");
+  // }
 
   return <NavbarComponent />;
 };
