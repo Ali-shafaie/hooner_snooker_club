@@ -468,7 +468,7 @@ ${filterFood}
                         >
                           چاپ بیل
                         </Button>
-                        {user?.role === "ADMIN" && (
+                        {/* {user?.role === "ADMIN" && (
                           <Button
                             onClick={() =>
                               handleDeleteBookingHistory(
@@ -482,7 +482,7 @@ ${filterFood}
                           >
                             حذف
                           </Button>
-                        )}
+                        )} */}
                       </TableCell>
                     </TableRow>
                   );
