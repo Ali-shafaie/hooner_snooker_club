@@ -6,20 +6,17 @@ export default async function getTotalOtherSalesFoodRevenue(
   endDate?: string
 ): Promise<TotalOtherSellsRevenueType> {
   try {
-    // Parse dates if provided
-    const start = startDate ? new Date(startDate) : undefined;
-    const end = endDate ? new Date(endDate) : undefined;
-
-    // Adjust endDate to include the entire end day if provided
-    const adjustedEndDate = end
-      ? new Date(new Date(end).setHours(23, 59, 59, 999))
-      : undefined;
+    // Construct the date filter object
+    const dateFilter: any = {};
+    if (startDate) dateFilter.gte = new Date(startDate);
+    if (endDate)
+      dateFilter.lte = new Date(new Date(endDate).setHours(23, 59, 59, 999));
 
     // Fetch sales data with or without date filtering
     const TotalRevenue = await prisma.otherSales.findMany({
       where: {
-        ...(start && end
-          ? { createdAt: { gte: start, lte: adjustedEndDate } }
+        ...(Object.keys(dateFilter).length > 0
+          ? { createdAt: dateFilter }
           : {}),
       },
       include: { menuItem: true },
@@ -41,14 +38,14 @@ export default async function getTotalOtherSalesFoodRevenue(
 
     // Calculate the total price for the "DRINK" category considering the amount
     const totalPriceDrink = drinkSales.reduce(
-      (sum, sale) => sum + sale.amount * sale.price,
+      (sum, sale) => sum + sale.price,
       0
     );
 
     // Calculate the total price for the "DRINK" category considering the buy price and amount
     const totalPriceDrinkFixed = drinkSales.reduce(
       (sum: number, sale: any) =>
-        sum + (sale.price - sale.menuItem.buyPrice) * sale.amount,
+        sum + (sale.menuItem.price - sale.menuItem.buyPrice) * sale.amount,
       0
     );
 
